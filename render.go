@@ -218,7 +218,7 @@ func renderAccent(p string, a int) string {
 
 func renderLinks(p string) string {
 	clinks := regexp.
-		MustCompile(complexLink).
+		MustCompile(ComplexLink).
 		FindAllStringSubmatch(p, -1)
 
 	for _, l := range clinks {
