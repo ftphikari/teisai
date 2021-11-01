@@ -2,15 +2,12 @@ package teisai
 
 import (
 	"bufio"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"net/url"
 	"path"
 	"regexp"
 	"strconv"
 	"strings"
-	"text/template"
 )
 
 const (
