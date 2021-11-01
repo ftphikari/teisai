@@ -26,7 +26,7 @@ const (
 	FootnoteLink = `(?s)\[\^([^\[]*?)\]`
 )
 
-func getParagraphs(str string) []string {
+func GetParagraphs(str string) []string {
 	strNormalized := regexp.
 		MustCompile("\r\n").
 		ReplaceAllString(str, "\n")
@@ -36,7 +36,7 @@ func getParagraphs(str string) []string {
 		Split(strNormalized, -1)
 }
 
-func renderBreaks(p string) string {
+func RenderBreaks(p string) string {
 	scanner := bufio.NewScanner(strings.NewReader(p))
 	t := ""
 	suffix := " +"
@@ -58,7 +58,7 @@ func renderBreaks(p string) string {
 	return t
 }
 
-func renderHeader(p string) string {
+func RenderHeader(p string) string {
 	prefix := ""
 	for i := 1; i <= 6; i++ {
 		prefix += "#"
@@ -75,7 +75,7 @@ func renderHeader(p string) string {
 	return p
 }
 
-func renderQuote(p string) string {
+func RenderQuote(p string) string {
 	prefix := "> "
 	if !strings.HasPrefix(p, prefix) {
 		return p
@@ -105,7 +105,7 @@ func renderQuote(p string) string {
 	return p
 }
 
-func renderTable(p string) string {
+func RenderTable(p string) string {
 	sep := "|"
 	head := "!"
 	if !strings.HasPrefix(p, sep) {
@@ -151,7 +151,7 @@ func renderTable(p string) string {
 	return p
 }
 
-func renderList(p string, ordered bool) string {
+func RenderList(p string, ordered bool) string {
 	prefix := "* "
 	tag := "ul"
 	if ordered {
@@ -183,7 +183,7 @@ func renderList(p string, ordered bool) string {
 	return p
 }
 
-func renderAccent(p string, a int) string {
+func RenderAccent(p string, a int) string {
 	var reg, tag string
 	switch a {
 	case Bold:
@@ -213,7 +213,7 @@ func renderAccent(p string, a int) string {
 	return p
 }
 
-func renderLinks(p string) string {
+func RenderLinks(p string) string {
 	clinks := regexp.
 		MustCompile(ComplexLink).
 		FindAllStringSubmatch(p, -1)
@@ -256,7 +256,7 @@ func renderLinks(p string) string {
 	return p
 }
 
-func renderImgs(p string) string {
+func RenderImgs(p string) string {
 	nimgs := regexp.
 		MustCompile(NormalImg).
 		FindAllStringSubmatch(p, -1)
@@ -280,7 +280,7 @@ func renderImgs(p string) string {
 	return p
 }
 
-func renderFootnotes(p string) string {
+func RenderFootnotes(p string) string {
 	nfs := regexp.
 		MustCompile(FootnoteRef).
 		FindStringSubmatch(p)
@@ -304,26 +304,26 @@ func renderFootnotes(p string) string {
 	return p
 }
 
-func renderParagraph(p string) string {
+func RenderParagraph(p string) string {
 	if p == "===" {
 		return "<hr>"
 	}
 
-	p = renderBreaks(p)
+	p = RenderBreaks(p)
 
-	p = renderHeader(p)
-	p = renderQuote(p)
-	p = renderTable(p)
-	p = renderList(p, true)
-	p = renderList(p, false)
+	p = RenderHeader(p)
+	p = RenderQuote(p)
+	p = RenderTable(p)
+	p = RenderList(p, true)
+	p = RenderList(p, false)
 
-	p = renderAccent(p, Bold)
-	p = renderAccent(p, Underline)
-	p = renderAccent(p, Italic)
+	p = RenderAccent(p, Bold)
+	p = RenderAccent(p, Underline)
+	p = RenderAccent(p, Italic)
 
-	p = renderLinks(p)
-	p = renderImgs(p)
-	p = renderFootnotes(p)
+	p = RenderLinks(p)
+	p = RenderImgs(p)
+	p = RenderFootnotes(p)
 
 	p = strings.TrimPrefix(p, "\n")
 	p = strings.TrimSuffix(p, "\n")
@@ -394,7 +394,7 @@ func RenderText(text string) string {
 		if p == "" {
 			continue
 		}
-		text += renderParagraph(p) + "\n"
+		text += RenderParagraph(p) + "\n"
 	}
 	return strings.TrimSpace(text)
 }
