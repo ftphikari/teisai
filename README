@@ -1,0 +1,49 @@
+Teisai formats a string from teisai dialect to HTML.
+It doesn't use any complicated parsing, so it's not a real language, it only
+uses regexes and basic substitutions. That said, you can nest quotes inside
+quotes, because it was trivial to implement.
+If you can implement a proper parser for teisai that would allow nested lists
+and other more complicated stuff - feel free to contribute.
+
+# Implemented formats
+
+* paragraphs (empty line)
+* headers ('# ' to '###### ')
+* blockquotes ('> ')
+* line breaks (' +' at the end of the line)
+* horizontal rule ('===')
+* bold (**word**)
+* underline (__word__)
+* italic (~~word~~)
+* strike (--word--)
+* footnotes ('[^1]' and '[^1]:')
+* unordered lists ('* ')
+* ordered lists ('- ')
+* images (':()' or ':[]()' for hidden)
+* links ('@()' or '@[]()' for title)
+* tables ('|' as a separator, and '|!' to declare <thead>)
+* metadata ('?')
+
+# Example document
+
+```
+?
+title=Example Doc
+date=2020-01-01
+
+# Example Doc
+
+some text here
+
+> a **quote**
+
+===
+
+enough.
+```
+
+# Q&A
+
+Q: What if i want to use * _ ~ etc. just by itself?
+A: Use HTML symbols: &ast; &lowbar; &tilde; etc.
+See full list at https://www.toptal.com/designers/htmlarrows/punctuation/
