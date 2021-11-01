@@ -386,7 +386,7 @@ func ClearMetadata(text string) string {
 
 func RenderText(text string) string {
 	text = ClearMetadata(text)
-	paragraphs := getParagraphs(text)
+	paragraphs := GetParagraphs(text)
 
 	text = ""
 	for _, p := range paragraphs {
