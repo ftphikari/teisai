@@ -68,11 +68,11 @@ func RenderHeader(p string) string {
 		}
 
 		p = strings.TrimPrefix(p, prefix+" ")
-		p = "<h" + h + ">" + p + "</h" + h + ">"
+		p = "<h" + h + ">" + strings.TrimSpace(p) + "</h" + h + ">"
 		break
 	}
 
-	return strings.TrimSpace(p)
+	return p
 }
 
 func RenderQuote(p string) string {
