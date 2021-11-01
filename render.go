@@ -72,7 +72,7 @@ func RenderHeader(p string) string {
 		break
 	}
 
-	return p
+	return strings.TrimSpace(p)
 }
 
 func RenderQuote(p string) string {
