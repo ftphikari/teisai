@@ -320,6 +320,7 @@ func RenderParagraph(p string) string {
 	p = RenderAccent(p, Bold)
 	p = RenderAccent(p, Underline)
 	p = RenderAccent(p, Italic)
+	p = RenderAccent(p, Strike)
 
 	p = RenderLinks(p)
 	p = RenderImgs(p)
