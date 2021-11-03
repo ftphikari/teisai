@@ -224,6 +224,10 @@ func RenderLinks(p string) string {
 		if strings.HasPrefix(match, "@D") {
 			link += ` download`
 		}
+		if strings.HasPrefix(s2, "^") {
+			s2 = strings.TrimPrefix(s2, "^")
+			link += ` target="_blank"`
+		}
 		link += `>` + s1 + `</a>`
 		p = strings.Replace(p, match, link, 1)
 	}
@@ -248,6 +252,10 @@ func RenderLinks(p string) string {
 		if strings.HasPrefix(match, "@D") {
 			link += ` download`
 		}
+		if strings.HasPrefix(s1, "^") {
+			s1 = strings.TrimPrefix(s1, "^")
+			link += ` target="_blank"`
+		}
 		link += `>` + name + `</a>`
 
 		p = strings.Replace(p, match, `<a href="`+s1+`">`+name+`</a>`, 1)
@@ -264,9 +272,9 @@ func RenderImgs(p string) string {
 	for _, n := range nimgs {
 		var img string
 		match, file := n[0], n[1]
-		if strings.HasPrefix(file, "@") {
-			file = strings.TrimPrefix(file, "@")
-			img = `<a href="` + file + `"><img src="` + file + `" alt="` + file + `"></a>`
+		if strings.HasPrefix(file, "^") {
+			file = strings.TrimPrefix(file, "^")
+			img = `<a target="_blank" href="` + file + `"><img src="` + file + `" alt="` + file + `"></a>`
 		} else {
 			img = `<img src="` + file + `" alt="` + file + `">`
 		}

@@ -19,8 +19,8 @@ and other more complicated stuff - feel free to contribute.
 * footnotes ('[^1]' and '[^1]:')
 * unordered lists ('* ')
 * ordered lists ('- ')
-* images (':()' for normal, ':(@)' for clickable, ':[]()' for hidden)
-* links ('@()' for normal, '@[]()' for title)
+* images (':()' for normal, ':(^)' for clickable, ':[]()' for hidden)
+* links ('@()' for normal, '@(^)' for outside, '@[]()' for title)
 * tables ('|' as a separator, and '|!' to declare <thead>)
 * metadata ('?')
 
