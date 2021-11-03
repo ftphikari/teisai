@@ -350,8 +350,12 @@ func RenderParagraph(p string) string {
 	p = strings.TrimPrefix(p, "\n")
 	p = strings.TrimSuffix(p, "\n")
 
-	// don't put <p> around other html tags
-	if strings.HasPrefix(p, "<") {
+	// don't put <p> around HTML tags
+	if strings.HasPrefix(p, "<") &&
+		!strings.HasPrefix(p, "<b>") &&
+		!strings.HasPrefix(p, "<u>") &&
+		!strings.HasPrefix(p, "<i>") &&
+		!strings.HasPrefix(p, "<s>") {
 		return p
 	}
 
