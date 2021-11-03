@@ -262,8 +262,14 @@ func RenderImgs(p string) string {
 		FindAllStringSubmatch(p, -1)
 
 	for _, n := range nimgs {
+		var img string
 		match, file := n[0], n[1]
-		img := `<img src="` + file + `" alt="` + file + `">`
+		if strings.HasPrefix(file, "@") {
+			file = strings.TrimPrefix(file, "@")
+			img = `<a href="` + file + `"><img src="` + file + `" alt="` + file + `"></a>`
+		} else {
+			img = `<img src="` + file + `" alt="` + file + `">`
+		}
 		p = strings.Replace(p, match, img, 1)
 	}
 
