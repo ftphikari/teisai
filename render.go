@@ -219,14 +219,18 @@ func RenderLinks(p string) string {
 		FindAllStringSubmatch(p, -1)
 
 	for _, l := range clinks {
+		outside := false
 		match, s1, s2 := l[0], l[1], l[2]
-		link := `<a href="` + s2 + `"`
-		if strings.HasPrefix(match, "@D") {
-			link += ` download`
-		}
 		if strings.HasPrefix(s2, "^") {
 			s2 = strings.TrimPrefix(s2, "^")
+			outside = true
+		}
+		link := `<a href="` + s2 + `"`
+		if outside {
 			link += ` target="_blank"`
+		}
+		if strings.HasPrefix(match, "@D") {
+			link += ` download`
 		}
 		link += `>` + s1 + `</a>`
 		p = strings.Replace(p, match, link, 1)
@@ -237,7 +241,12 @@ func RenderLinks(p string) string {
 		FindAllStringSubmatch(p, -1)
 
 	for _, l := range slinks {
+		outside := false
 		match, s1 := l[0], l[1]
+		if strings.HasPrefix(s1, "^") {
+			s1 = strings.TrimPrefix(s1, "^")
+			outside = true
+		}
 		name := path.Base(s1)
 		if strings.HasPrefix(s1, "http") {
 			u, err := url.Parse(s1)
@@ -247,18 +256,16 @@ func RenderLinks(p string) string {
 			name = u.Host
 			name = strings.TrimPrefix(name, "www.")
 		}
-
 		link := `<a href="` + s1 + `"`
+		if outside {
+			link += ` target="_blank"`
+		}
 		if strings.HasPrefix(match, "@D") {
 			link += ` download`
 		}
-		if strings.HasPrefix(s1, "^") {
-			s1 = strings.TrimPrefix(s1, "^")
-			link += ` target="_blank"`
-		}
 		link += `>` + name + `</a>`
 
-		p = strings.Replace(p, match, `<a href="`+s1+`">`+name+`</a>`, 1)
+		p = strings.Replace(p, match, link, 1)
 	}
 
 	return p
