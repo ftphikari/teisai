@@ -363,7 +363,7 @@ func RenderParagraph(p string) string {
 	return "<p>" + p + "</p>"
 }
 
-func GetMetadataFromReader(r *io.Reader) (metadata map[string]string, ok bool) {
+func GetMetadataFromReader(r io.Reader) (metadata map[string]string, ok bool) {
 	metadata = make(map[string]string)
 	scanner := bufio.NewScanner(r)
 	scanner.Scan()
