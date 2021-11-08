@@ -3,6 +3,7 @@ package teisai
 import (
 	"bufio"
 	"log"
+	"io"
 	"net/url"
 	"path"
 	"regexp"
@@ -379,7 +380,7 @@ func GetMetadataFromReader(r *io.Reader) (metadata map[string]string, ok bool) {
 		}
 		data := strings.SplitN(txt, "=", 2)
 		if len(data) != 2 {
-			log.Println("GetMetadata: broken metadata:", txt)
+			log.Println("GetMetadataFromReader: broken metadata:", txt)
 			continue
 		}
 		metadata[data[0]] = data[1]
