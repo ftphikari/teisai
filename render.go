@@ -362,9 +362,9 @@ func RenderParagraph(p string) string {
 	return "<p>" + p + "</p>"
 }
 
-func GetMetadata(text string) (metadata map[string]string, ok bool) {
+func GetMetadataFromReader(r *io.Reader) (metadata map[string]string, ok bool) {
 	metadata = make(map[string]string)
-	scanner := bufio.NewScanner(strings.NewReader(text))
+	scanner := bufio.NewScanner(r)
 	scanner.Scan()
 	ok = false
 	if scanner.Text() != "?" {
@@ -386,6 +386,10 @@ func GetMetadata(text string) (metadata map[string]string, ok bool) {
 	}
 
 	return
+}
+
+func GetMetadata(text string) (metadata map[string]string, ok bool) {
+	return GetMetadataFromReader(strings.NewReader(text))
 }
 
 func ClearMetadata(text string) string {
