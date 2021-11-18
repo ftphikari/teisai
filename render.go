@@ -2,9 +2,10 @@ package teisai
 
 import (
 	"bufio"
-	"log"
+	"fmt"
 	"io"
 	"net/url"
+	"os"
 	"path"
 	"regexp"
 	"strconv"
@@ -252,7 +253,7 @@ func RenderLinks(p string) string {
 		if strings.HasPrefix(s1, "http") {
 			u, err := url.Parse(s1)
 			if err != nil {
-				log.Println("url parse error:", err)
+				fmt.Fprintln(os.Stderr, "RenderLinks: url parse error:", err)
 			}
 			name = u.Host
 			name = strings.TrimPrefix(name, "www.")
@@ -380,7 +381,7 @@ func GetMetadataFromReader(r io.Reader) (metadata map[string]string, ok bool) {
 		}
 		data := strings.SplitN(txt, "=", 2)
 		if len(data) != 2 {
-			log.Println("GetMetadataFromReader: broken metadata:", txt)
+			fmt.Fprintln(os.Stderr, "GetMetadataFromReader: broken metadata:", txt)
 			continue
 		}
 		metadata[data[0]] = data[1]
@@ -394,25 +395,39 @@ func GetMetadata(text string) (metadata map[string]string, ok bool) {
 }
 
 func ClearMetadata(text string) string {
-	scanner := bufio.NewScanner(strings.NewReader(text))
-	scanner.Scan()
-	if scanner.Text() != "?" {
+	text = regexp.
+		MustCompile("\r\n").
+		ReplaceAllString(text, "\n")
+
+	if len(text) < 2 {
 		return text
 	}
 
-	for scanner.Scan() {
-		txt := strings.TrimSpace(scanner.Text())
-		if txt == "" {
-			break
+	if text[0] != '?' && text[1] != '\n' {
+		return text
+	}
+
+	wasnl := true
+	idx := -1
+	for i, r := range text[2:] {
+		if r != '\n' {
+			wasnl = false
+			continue
 		}
+
+		if !wasnl {
+			wasnl = true
+			continue
+		}
+
+		idx = i + 1
+		break
+	}
+	if idx < 0 {
+		return ""
 	}
 
-	newtext := ""
-	for scanner.Scan() {
-		newtext += scanner.Text() + "\n"
-	}
-
-	return newtext
+	return text[idx+2:]
 }
 
 func RenderText(text string) string {
