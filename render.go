@@ -70,7 +70,7 @@ func RenderHeader(p string) string {
 		}
 
 		p = strings.TrimPrefix(p, prefix+" ")
-		p = "<h" + h + ">" + strings.TrimSpace(p) + "</h" + h + ">"
+		p = "\\<h" + h + ">" + strings.TrimSpace(p) + "</h" + h + ">"
 		break
 	}
 
@@ -103,7 +103,7 @@ func RenderQuote(p string) string {
 		t += txt + "\n"
 	}
 
-	p = "<blockquote>\n" + RenderText(t) + "</blockquote>"
+	p = "\\<blockquote>\n" + RenderText(t) + "</blockquote>"
 	return p
 }
 
@@ -149,7 +149,7 @@ func RenderTable(p string) string {
 	}
 	t += "</tbody>\n"
 
-	p = "<table>\n" + t + "</table>"
+	p = "\\<table>\n" + t + "</table>"
 	return p
 }
 
@@ -181,7 +181,7 @@ func RenderList(p string, ordered bool) string {
 	}
 	t += par + "</li>"
 
-	p = "<" + tag + ">\n" + t + "\n</" + tag + ">"
+	p = "\\<" + tag + ">\n" + t + "\n</" + tag + ">"
 	return p
 }
 
@@ -296,7 +296,7 @@ func RenderImgs(p string) string {
 
 	for _, h := range himgs {
 		match, desc, file := h[0], h[1], h[2]
-		img := `<details><summary>[` + desc + `]</summary><img src="` + file + `" alt="` + file + `"></details>`
+		img := `\<details><summary>[` + desc + `]</summary><img src="` + file + `" alt="` + file + `"></details>`
 		p = strings.Replace(p, match, img, 1)
 	}
 
@@ -352,13 +352,9 @@ func RenderParagraph(p string) string {
 	p = strings.TrimPrefix(p, "\n")
 	p = strings.TrimSuffix(p, "\n")
 
-	// don't put <p> around HTML tags
-	if strings.HasPrefix(p, "<") &&
-		!strings.HasPrefix(p, "<b>") &&
-		!strings.HasPrefix(p, "<u>") &&
-		!strings.HasPrefix(p, "<i>") &&
-		!strings.HasPrefix(p, "<s>") {
-		return p
+	// don't put <p> around escaped HTML tags
+	if strings.HasPrefix(p, `\<`) {
+		return p[1:]
 	}
 
 	return "<p>" + p + "</p>"

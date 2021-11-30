@@ -47,3 +47,6 @@ enough.
 Q: What if i want to use * _ ~ etc. just by itself?
 A: Use HTML symbols: &ast; &lowbar; &tilde; etc.
 See full list at https://www.toptal.com/designers/htmlarrows/punctuation/
+
+Q: By default all text is put into <p></p>, including HTML blocks, how do i escape that?
+A: Put \ in the beginning of the paragraph before the HTML tag begins, like so `\<div></div>`.
